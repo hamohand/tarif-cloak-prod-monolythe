@@ -1,0 +1,46 @@
+# Dépendances
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist
+.angular
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Tests
+coverage
+*.spec.ts
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# Fichiers de configuration locale
+angular.json.local
+tsconfig.local.json
+
+# Logs
+logs
+*.log
+
+# Fichiers temporaires
+.DS_Store
+Thumbs.db

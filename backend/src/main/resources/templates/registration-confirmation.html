@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box p {
+            margin: 5px 0;
+        }
+        .info-box strong {
+            color: #2c3e50;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e8ed;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .warning-box p {
+            margin: 5px 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 th:if="${!isExistingOrganization}">Confirmation de création d'organisation</h1>
+            <h1 th:if="${isExistingOrganization}">Nouvelle demande d'inscription</h1>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour,</p>
+            
+            <div th:if="${!isExistingOrganization}">
+                <p>Une demande de création d'organisation a été effectuée avec l'email <strong th:text="${organizationEmail}">email@example.com</strong>.</p>
+                
+                <div class="info-box">
+                    <p><strong>Nom de l'organisation :</strong> <span th:text="${organizationName}">Nom</span></p>
+                    <p><strong>Email de l'organisation :</strong> <span th:text="${organizationEmail}">email@example.com</span></p>
+                    <p><strong>Email de l'utilisateur :</strong> <span th:text="${userEmail}">user@example.com</span></p>
+                </div>
+                
+                <p>Pour confirmer la création de cette organisation et activer le compte utilisateur, veuillez cliquer sur le bouton ci-dessous :</p>
+            </div>
+            
+            <div th:if="${isExistingOrganization}">
+                <p>Un nouvel utilisateur souhaite rejoindre votre organisation <strong th:text="${organizationName}">Nom</strong>.</p>
+                
+                <div class="info-box">
+                    <p><strong>Email de l'utilisateur :</strong> <span th:text="${userEmail}">user@example.com</span></p>
+                    <p><strong>Email de l'organisation :</strong> <span th:text="${organizationEmail}">email@example.com</span></p>
+                </div>
+                
+                <p>Pour confirmer cette demande d'inscription et ajouter cet utilisateur à votre organisation, veuillez cliquer sur le bouton ci-dessous :</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <a th:href="${confirmationUrl}" class="button">Confirmer l'inscription</a>
+            </div>
+            
+            <div class="warning-box">
+                <p><strong>⚠️ Important :</strong> Ce lien est valide pendant 24 heures. Si vous n'avez pas demandé cette inscription, vous pouvez ignorer cet email.</p>
+            </div>
+            
+            <p>Si le bouton ne fonctionne pas, vous pouvez copier et coller le lien suivant dans votre navigateur :</p>
+            <p style="word-break: break-all; color: #3498db; font-size: 12px;" th:text="${confirmationUrl}">URL de confirmation</p>
+        </div>
+        
+        <div class="footer">
+            <p>Cet email a été envoyé automatiquement, merci de ne pas y répondre.</p>
+            <p>© Enclume Numérique - Tous droits réservés</p>
+        </div>
+    </div>
+</body>
+</html>
+

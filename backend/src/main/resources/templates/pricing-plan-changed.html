@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changement de plan tarifaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .plan-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .plan-info p {
+            margin: 5px 0;
+        }
+        .plan-info strong {
+            color: #2c3e50;
+        }
+        .old-plan {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        .new-plan {
+            background-color: #d4edda;
+            border-left-color: #28a745;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Changement de plan tarifaire</h1>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour,</p>
+            
+            <p>Le plan tarifaire de votre organisation <strong th:text="${organizationName}">Organisation</strong> a été modifié.</p>
+            
+            <div th:if="${oldPlanName != null}" class="plan-info old-plan">
+                <p><strong>Ancien plan :</strong> <span th:text="${oldPlanName}">Plan précédent</span></p>
+                <p th:if="${oldPlanPrice != null}">
+                    <strong>Prix :</strong> 
+                    <span th:if="${oldPlanPricePerMonth != null && oldPlanPricePerMonth > 0}">
+                        <span th:text="${oldPlanPricePerMonth}">0</span> €/mois
+                    </span>
+                    <span th:if="${oldPlanPricePerRequest != null && oldPlanPricePerRequest > 0}">
+                        <span th:text="${oldPlanPricePerRequest}">0</span> €/requête
+                    </span>
+                    <span th:if="${(oldPlanPricePerMonth == null || oldPlanPricePerMonth == 0) && (oldPlanPricePerRequest == null || oldPlanPricePerRequest == 0)}">
+                        Gratuit
+                    </span>
+                </p>
+                <p th:if="${oldPlanQuota != null}">
+                    <strong>Quota mensuel :</strong> 
+                    <span th:if="${oldPlanQuota > 0}" th:text="${oldPlanQuota}">0</span> requêtes/mois
+                    <span th:if="${oldPlanQuota == 0 || oldPlanQuota == null}">Illimité</span>
+                </p>
+            </div>
+            
+            <div th:if="${newPlanName != null}" class="plan-info new-plan">
+                <p><strong>Nouveau plan :</strong> <span th:text="${newPlanName}">Nouveau plan</span></p>
+                <p th:if="${newPlanDescription != null && !newPlanDescription.isEmpty()}">
+                    <span th:text="${newPlanDescription}">Description</span>
+                </p>
+                <p th:if="${newPlanPrice != null}">
+                    <strong>Prix :</strong> 
+                    <span th:if="${newPlanPricePerMonth != null && newPlanPricePerMonth > 0}">
+                        <span th:text="${newPlanPricePerMonth}">0</span> €/mois
+                    </span>
+                    <span th:if="${newPlanPricePerRequest != null && newPlanPricePerRequest > 0}">
+                        <span th:text="${newPlanPricePerRequest}">0</span> €/requête
+                    </span>
+                    <span th:if="${(newPlanPricePerMonth == null || newPlanPricePerMonth == 0) && (newPlanPricePerRequest == null || newPlanPricePerRequest == 0)}">
+                        Gratuit
+                    </span>
+                </p>
+                <p th:if="${newPlanQuota != null}">
+                    <strong>Quota mensuel :</strong> 
+                    <span th:if="${newPlanQuota > 0}" th:text="${newPlanQuota}">0</span> requêtes/mois
+                    <span th:if="${newPlanQuota == 0 || newPlanQuota == null}">Illimité</span>
+                </p>
+                <p th:if="${trialPeriodDays != null && trialPeriodDays > 0}">
+                    <strong>Période d'essai :</strong> <span th:text="${trialPeriodDays}">0</span> jours
+                </p>
+            </div>
+            
+            <div th:if="${newPlanName == null}" class="plan-info old-plan">
+                <p><strong>Le plan tarifaire a été retiré.</strong></p>
+                <p>Votre organisation utilise maintenant le plan gratuit par défaut.</p>
+            </div>
+            
+            <div th:if="${trialExpiresAt != null}" class="warning">
+                <p><strong>⚠️ Période d'essai active</strong></p>
+                <p>Votre période d'essai se termine le <strong th:text="${trialExpiresAt}">date</strong>.</p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px;">
+                <a th:href="${#strings.concat(frontendUrl, '/dashboard')}" class="button">Accéder à mon tableau de bord</a>
+            </p>
+            
+            <p>Vous pouvez consulter les détails de votre plan et gérer votre abonnement depuis votre espace client.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Cet email a été envoyé automatiquement par Enclume Numérique.</p>
+            <p>Si vous avez des questions ou si vous n'avez pas demandé ce changement, veuillez nous contacter immédiatement.</p>
+        </div>
+    </div>
+</body>
+</html>
+

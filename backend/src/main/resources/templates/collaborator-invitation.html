@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Invitation collaborateur</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 24px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+    <tr>
+        <td style="background-color: #1f2937; padding: 24px;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 24px;"
+                th:text="'Invitation à rejoindre ' + ${organizationName}">
+                Invitation à rejoindre
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 24px; color: #111827;">
+            <p>
+                Bonjour
+                <span th:text="${collaboratorFirstName}">Prénom</span>
+                <span th:text="${collaboratorLastName}">Nom</span>,
+            </p>
+            <p>
+                Vous avez été invité(e) à rejoindre l'organisation
+                <strong th:text="${organizationName}">Nom Organisation</strong>
+                (<span th:text="${organizationEmail}">email@organisation.com</span>).
+            </p>
+            <p>Pour confirmer votre accès, merci de cliquer sur le bouton ci-dessous et de suivre les instructions.</p>
+            <p><strong>Identifiants temporaires :</strong></p>
+            <p>
+                <strong>Nom d'utilisateur :</strong>
+                <span th:text="${collaboratorUsername}">username</span>
+            </p>
+            <p>
+                <strong>Mot de passe temporaire :</strong>
+                <code th:text="${temporaryPassword}">password</code>
+            </p>
+            <p style="text-align: center; margin: 32px 0;">
+                <a th:href="${confirmationUrl}"
+                   style="background-color: #2563eb; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                    Confirmer mon invitation
+                </a>
+            </p>
+            <p>Ce lien expirera automatiquement après quelques heures pour des raisons de sécurité. Si vous ne parvenez pas à cliquer sur le bouton, copiez-collez l'URL suivante dans votre navigateur :</p>
+            <p style="word-break: break-all; color: #2563eb;"
+               th:text="${confirmationUrl}">
+                https://example.com/confirmation
+            </p>
+            <p>À bientôt,<br>L'équipe Enclume Numérique</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color: #f3f4f6; padding: 16px; color: #6b7280; font-size: 12px; text-align: center;">
+            Cet email a été envoyé automatiquement. Merci de ne pas y répondre.
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+

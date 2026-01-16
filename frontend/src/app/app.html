@@ -1,0 +1,5 @@
+<app-navbar></app-navbar>
+<app-notifications></app-notifications>
+<main class="container" [class.with-sidebar]="hasOrganizationSidebar$ | async">
+  <router-outlet></router-outlet>
+</main>

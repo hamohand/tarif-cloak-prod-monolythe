@@ -1,0 +1,191 @@
+<div class="search-container">
+  <!-- Fil rouge : Section démarche à suivre -->
+  <h3>Etapes du processus (Openai gpt4.1)</h3>
+  <ul class="arrow-list">
+    <li><b>Fichier de données local</b></li>
+    @if (lesarticles.length > 0 && !isSearchComplete) {
+      <li><b>Chargement du fichier</b></li>
+    } @else {
+      <li>Chargement du fichier</li>
+    }
+    @if (!isLoading) {
+      <li>Lancement de la recherche</li>
+    } @else {
+      <li><b>Lancement de la recherche</b></li>
+    }
+    @if (isSearchComplete) {
+      <li><b>Téléchargement du résultat</b></li>
+    } @else {
+      <li>Téléchargement du résultat</li>
+    }
+  </ul>
+  <!-- -->
+
+  @if(lesarticles.length === 0) {
+    <div class="file-upload-container">
+      <h4>1. Créer ou mettre à jour le fichier de données local</h4>
+      <ul>
+        <li>il doit contenir une colonne à en-tête '<b>article</b>' pour les <u>descriptions</u> des articles</li>
+        <li>il doit contenir une colonne à en-tête '<b>code</b>', cette colonne est laissée <u>vide</u> elle sera remplie par l'application dans le fichier résultat.</li>
+
+        <!-- EN SAVOIR PLUS ... Formats-->
+        <button
+          class="btn"
+          (click)="toggleMoreFormatDonnees()"
+        >
+          {{ showMore ? 'Clic pour fermer' : 'En savoir plus...' }}
+          @if(showMore) {
+            <div class="more-content">
+              <br>
+              <b>Types de fichiers</b> acceptés  :
+              <br><b>-</b> Excel (.xls, .xlsx)
+              <br><b>-</b> LibreOffice (.ods)
+              <br><b>-</b> Les fichiers au format CSV avec la <code>tabulation</code> comme délimiteur (.csv ou .tsv)
+              <br><b>-</b> Les fichiers Google Sheets sont convertis en '.tsv'.
+            </div>
+          }
+        </button>
+        <!-- -->
+      </ul>
+
+      <h4>2. Charger ce fichier de données</h4>
+      <ul>
+        <li>choisir l'emplacement du fichier de données,</li>
+        <li>le sélectionner et cliquez sur 'Ouvrir'.</li></ul>
+
+      <input type="file" (change)="onFileSelected($event)" accept=".csv, .tsv, .xls, .xlsx, .ods" class="cta-button" />
+      @if (isLoading && !isSearchComplete) {
+        <div class="loading-message">
+          Chargement du fichier en cours...
+        </div>
+      }
+    </div>
+  }
+
+
+  <!-- Le reste de l'interface est affiché seulement si un fichier est chargé ----------------------------- -->
+  <hr>
+
+  @if(lesarticles.length > 0 && !isSearchComplete) {
+    <h4>Fichier chargé : <strong>{{ fileName }}</strong></h4>
+    <h4>Données du fichier :</h4>
+      <!-- AFFICHER LES DONNEES ... -->
+    <button
+      class="btn"
+      (click)="toggleAfficheDonnees()"
+    >
+      {{ showMoreDonnees ? 'Clic pour fermer' : 'Afficher les données' }}
+      @if(showMoreDonnees) {
+        <div class="more-content">
+          <span>Articles</span>
+
+          <table>
+            <tbody>
+              @for (e of lesarticles; track e){
+                <tr>
+                  <td>
+                    <!-- contenu : -->
+                    {{e.article}} : {{e.code}}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </button>
+    <!-- -->
+    <br><br>
+
+    <h3>3. Lancer la recherche</h3>
+
+    @if(!isSearchComplete) {
+
+    }
+    <div class="search-form">
+      <button
+        (click)="search()"
+        [disabled]="isLoading"
+        class="cta-button"
+      >
+        {{ isLoading ? 'Recherche en cours...' : 'Lancer la recherche des codes' }}
+      </button>
+    </div>
+  }
+
+  <!-- Ce bouton n'apparaît qu'une fois la recherche terminée -->
+  @if(isSearchComplete && !isLoading && !isSaved) {
+    @if(isSearchComplete) {
+      <h4>- Recherche terminée - Données mises à jour :</h4>
+      <!-- EN SAVOIR PLUS ... format fichier résultat-->
+      <button
+        class="btn"
+        (click)="toggleMoreFormatResultat()"
+      >
+        {{ showMore2 ? 'Clic pour fermer' : 'En savoir plus...' }}
+        @if(showMore2) {
+          <div class="more-content">
+            <br>
+            <br><b>-</b>Le fichier résultat est toujours au format CSV avec la tabulation comme délimiteur (.tsv).
+            <br><b>-</b>Il porte le nom du fichier de données précédé de "<code>resultat-</code>" et son extension est toujous '.tsv".
+
+          </div>
+        }
+      </button>
+      <!-- -->
+
+    }
+
+    <div>
+      <h3>4. Création automatique du fichier résultat de la recherche</h3>
+      <!-- VOIR LES RESULTATS  ... -->
+      <button
+        class="btn"
+        (click)="toggleAfficheResultat()"
+      >
+        {{ showMoreResultat ? 'Clic pour fermer' : 'Voir les résultats' }}
+        @if(showMoreResultat) {
+          <div class="more-content">
+            <table class="couleurFond" border="0" width="70%">
+              <tbody>
+                @for (e of lesarticles; track e){
+                  <tr>
+                    <td>
+                      <!-- contenu : -->
+                      {{e.article}} : {{e.code}}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+
+          </div>
+        }
+      </button>
+      <!-- -->
+      <br><br>
+      Dans la boîte de dialogue :
+      <ul>
+        <li>choisir l'emplacement du fichier résultat,</li>
+        <li>cliquez sur `Enregistrer`.</li></ul>
+      <button
+        (click)="saveAndDownload()"
+        class="cta-button"
+      >
+        Télécharger le fichier des résultats
+      </button>
+
+      @if(error) {
+        <div class="error-message">
+          {{ error }}
+        </div>
+      }
+
+    </div>
+  }
+
+  @if(isSaved) {
+    <h4>** Votre fichier a été enregistré, vous pouvez maintenant l'utiliser.</h4>
+  }
+
+</div>

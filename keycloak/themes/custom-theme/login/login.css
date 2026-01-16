@@ -1,0 +1,318 @@
+/* Styles personnalisés pour le formulaire de connexion */
+
+/* Container principal - Design aligné avec l'application Angular */
+.custom-login-container {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(30, 60, 114, 0.15), 0 4px 16px rgba(30, 60, 114, 0.1);
+    border: 1px solid rgba(30, 60, 114, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2ecc71, #3498db);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* En-tête personnalisé */
+.custom-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e9ecef;
+    position: relative;
+}
+
+.custom-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 2px;
+}
+
+.custom-header h1 {
+    color: #1e3c72;
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.custom-header p {
+    color: #6b7280;
+    font-size: 1.05rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Groupes de formulaire */
+.form-group {
+    margin-bottom: 1.75rem;
+}
+
+.custom-label {
+    display: block;
+    margin-bottom: 0.625rem;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+/* Champs de saisie */
+.custom-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15), 0 2px 8px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.custom-input::placeholder {
+    color: #9ca3af;
+    opacity: 0.8;
+}
+
+/* Wrapper pour le champ mot de passe avec bouton toggle */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input {
+    padding-right: 3.5rem;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.password-toggle-icon {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+    transition: color 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.password-toggle-icon.hidden {
+    display: none;
+}
+
+.password-toggle:hover .password-toggle-icon {
+    color: #3498db;
+    transform: scale(1.1);
+}
+
+/* Options du formulaire */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.checkbox label {
+    color: #6b7280;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3498db;
+}
+
+.forgot-password a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Boutons */
+.form-buttons {
+    margin-top: 2.5rem;
+}
+
+.custom-button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.custom-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.custom-button.primary {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(30, 60, 114, 0.35), 0 2px 8px rgba(30, 60, 114, 0.2);
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(30, 60, 114, 0.45), 0 4px 12px rgba(30, 60, 114, 0.3);
+    background: linear-gradient(135deg, #2a5298 0%, #3d6bb3 100%);
+}
+
+.custom-button.primary:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+}
+
+/* Messages d'erreur */
+.alert-error {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+/* Liens d'inscription */
+#kc-registration {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+#kc-registration a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#kc-registration a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .custom-login-container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        max-width: 100%;
+    }
+    
+    .custom-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .custom-header p {
+        font-size: 0.95rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .custom-input {
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .password-input {
+        padding-right: 3rem;
+    }
+}
+

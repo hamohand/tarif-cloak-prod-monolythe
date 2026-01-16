@@ -1,0 +1,308 @@
+# ===============================================================
+# DOCKER COMPOSE - APPLICATION FULL-STACK
+# Stack : Angular (Frontend) | Spring Boot (Backend) | Keycloak (Auth) | PostgreSQL (DB)
+# ===============================================================
+# Toutes les variables sont configurables via le fichier .env
+# ===============================================================
+
+# Utilisation des champs d'extension (x-*) pour une meilleure organisation
+x-traefik-host-rule: &traefik-host-rule "Host(`${FRONTEND_DOMAIN}`) || Host(`${WWW_FRONTEND_DOMAIN}`)"
+
+# Labels Traefik spécifiques pour le service frontend
+x-traefik-frontend-labels: &traefik-frontend-labels
+  traefik.enable: "true"
+  traefik.docker.network: "webproxy"
+  # --- Routeur HTTPS pour le frontend (priorité plus basse, catch-all) ---
+  "traefik.http.routers.hscode-frontend-secure.rule": *traefik-host-rule
+  "traefik.http.routers.hscode-frontend-secure.entrypoints": "websecure"
+  "traefik.http.routers.hscode-frontend-secure.tls.certresolver": "${TRAEFIK_CERT_RESOLVER:-myresolver}"
+  "traefik.http.routers.hscode-frontend-secure.service": "hscode-frontend"
+  "traefik.http.routers.hscode-frontend-secure.priority": "1"
+  # --- Routeur HTTP pour la redirection vers HTTPS ---
+  "traefik.http.routers.hscode-frontend-http.rule": *traefik-host-rule
+  "traefik.http.routers.hscode-frontend-http.entrypoints": "web"
+  "traefik.http.routers.hscode-frontend-http.middlewares": "https-redirect"
+  "traefik.http.routers.hscode-frontend-http.priority": "1"
+  # --- Service pointant vers le conteneur frontend ---
+  "traefik.http.services.hscode-frontend.loadbalancer.server.port": "${FRONTEND_INTERNAL_PORT:-80}"
+
+########### BACKEND #############
+# Labels Traefik spécifiques pour le service backend (exposé sur /api)
+x-traefik-backend-labels: &traefik-backend-labels
+  traefik.enable: "true"
+  traefik.docker.network: "webproxy"
+  # --- Définition du middleware pour ce service ---
+  "traefik.http.middlewares.hscode-api-stripprefix.stripprefix.prefixes": "/api"
+  # --- Routeur HTTPS pour le backend (priorité élevée pour être évalué en premier) ---
+  "traefik.http.routers.hscode-backend-secure.rule": "(Host(`${FRONTEND_DOMAIN}`) || Host(`${WWW_FRONTEND_DOMAIN}`)) && PathPrefix(`/api`)"
+  "traefik.http.routers.hscode-backend-secure.entrypoints": "websecure"
+  "traefik.http.routers.hscode-backend-secure.tls.certresolver": "${TRAEFIK_CERT_RESOLVER:-myresolver}"
+  "traefik.http.routers.hscode-backend-secure.middlewares": "hscode-api-stripprefix"
+  "traefik.http.routers.hscode-backend-secure.service": "hscode-backend"
+  "traefik.http.routers.hscode-backend-secure.priority": "10"
+  # --- Routeur HTTP pour la redirection vers HTTPS ---
+  "traefik.http.routers.hscode-backend-http.rule": "(Host(`${FRONTEND_DOMAIN}`) || Host(`${WWW_FRONTEND_DOMAIN}`)) && PathPrefix(`/api`)"
+  "traefik.http.routers.hscode-backend-http.entrypoints": "web"
+  "traefik.http.routers.hscode-backend-http.middlewares": "https-redirect" # Utilise le middleware global
+  "traefik.http.routers.hscode-backend-http.service": "hscode-backend"
+  "traefik.http.routers.hscode-backend-http.priority": "10"
+  # --- Service pointant vers le conteneur backend ---
+  "traefik.http.services.hscode-backend.loadbalancer.server.port": "${BACKEND_INTERNAL_PORT:-8081}"
+
+    ########### KEYCLOAK #############
+  #Labels pour exposer Keycloak via Traefik
+x-traefik-keycloak-labels: &traefik-keycloak-labels
+  traefik.enable: "true"
+  traefik.docker.network: "webproxy"
+  # --- Middleware CORS pour Keycloak ---
+  # Note: Les variables d'environnement doivent être interpolées par Docker Compose
+  "traefik.http.middlewares.keycloak-cors.headers.accessControlAllowMethods": "GET,POST,PUT,DELETE,OPTIONS,PATCH"
+  "traefik.http.middlewares.keycloak-cors.headers.accessControlAllowOriginList": "https://${FRONTEND_DOMAIN},https://${WWW_FRONTEND_DOMAIN}"
+  "traefik.http.middlewares.keycloak-cors.headers.accessControlAllowHeaders": "*"
+  "traefik.http.middlewares.keycloak-cors.headers.accessControlAllowCredentials": "true"
+  "traefik.http.middlewares.keycloak-cors.headers.accessControlMaxAge": "3600"
+  "traefik.http.middlewares.keycloak-cors.headers.addVaryHeader": "true"
+  # --- Content Security Policy pour autoriser le framing depuis le frontend ---
+  "traefik.http.middlewares.keycloak-cors.headers.customResponseHeaders.Content-Security-Policy": "frame-ancestors 'self' https://${FRONTEND_DOMAIN} https://${WWW_FRONTEND_DOMAIN}"
+  # --- Routeur HTTPS pour Keycloak ---
+  "traefik.http.routers.hscode-keycloak-secure.rule": "Host(`${KEYCLOAK_DOMAIN}`)"
+  "traefik.http.routers.hscode-keycloak-secure.entrypoints": "websecure"
+  "traefik.http.routers.hscode-keycloak-secure.tls.certresolver": "${TRAEFIK_CERT_RESOLVER:-myresolver}"
+  "traefik.http.routers.hscode-keycloak-secure.middlewares": "keycloak-cors"
+  "traefik.http.routers.hscode-keycloak-secure.service": "hscode-keycloak"
+  # --- Routeur HTTP pour la redirection globale (pas besoin de middleware ici) ---
+  "traefik.http.routers.hscode-keycloak-http.rule": "Host(`${KEYCLOAK_DOMAIN}`)"
+  "traefik.http.routers.hscode-keycloak-http.entrypoints": "web"
+  "traefik.http.routers.hscode-keycloak-http.middlewares": "https-redirect"
+  # --- Service pointant vers le conteneur Keycloak sur le port 8080 ---
+  "traefik.http.services.hscode-keycloak.loadbalancer.server.port": "${KEYCLOAK_INTERNAL_PORT:-8080}"
+
+# /////////////////////////////////////
+# Ancres YAML pour factoriser les variables communes
+x-common-app-bd-vars: &common-app-bd-vars
+  POSTGRES_DB: "${POSTGRES_DB}"
+  POSTGRES_USER: "${POSTGRES_USER}"
+  POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+
+x-common-bd-keycloak-vars: &common-bd-keycloak-vars
+  POSTGRES_DB: "${KEYCLOAK_DB:-keycloak}"
+  POSTGRES_USER: "${KEYCLOAK_DB_USER:-keycloak}"
+  POSTGRES_PASSWORD: "${KEYCLOAK_DB_PASSWORD}"
+
+#x-common-bd-app-keycloak-vars: &common-bd-app-keycloak-vars
+#  POSTGRES_DB: "${POSTGRES_DB}"
+#  POSTGRES_USER: "${POSTGRES_USER}"
+#  POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+
+
+services:
+
+  # ===============================================================
+  # BASE DE DONNÉES POSTGRESQL POUR L'APPLICATION
+  # ===============================================================
+  app-db:
+    image: "postgres:${POSTGRES_IMAGE_TAG:-16}"
+    container_name: "${PROJECT_NAME:-app}-app-db"
+    environment:
+      <<: *common-app-bd-vars
+#    ports:
+#      - "${DB_HOST_PORT:-5432}:5432"
+    volumes:
+      - app-database-data:/var/lib/postgresql/data
+      - ./sql/sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - default
+
+  # ===============================================================
+  # BASE DE DONNÉES POSTGRESQL POUR KEYCLOAK
+  # ===============================================================
+  keycloak-db:
+    image: "postgres:${POSTGRES_IMAGE_TAG:-16}"
+    container_name: "${PROJECT_NAME:-app}-keycloak-db"
+    environment:
+      <<: *common-bd-keycloak-vars
+#    ports:
+#      - "${KEYCLOAK_DB_PORT:-5433}:5432"  # Port différent pour éviter les conflits
+    volumes:
+      - keycloak-database-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-U", "${KEYCLOAK_DB_USER}", "-d", "${KEYCLOAK_DB}"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - default
+
+  # ===============================================================
+  # KEYCLOAK - AUTHENTIFICATION ET AUTORISATION
+  # ===============================================================
+  keycloak:
+    image: "quay.io/keycloak/keycloak:${KEYCLOAK_IMAGE_TAG:-22.0.1}"
+    container_name: "${PROJECT_NAME:-app}-keycloak"
+    environment:
+      # Configuration Base de données
+      KC_DB: postgres
+      KC_DB_URL: "jdbc:postgresql://${DB_KEYCLOAK_SERVICE_NAME:-keycloak-db}:${POSTGRES_PORT:-5432}/${KEYCLOAK_DB}"
+      KC_DB_USERNAME: "${KEYCLOAK_DB_USER:-keycloak}"
+      KC_DB_PASSWORD: "${KEYCLOAK_DB_PASSWORD}"
+      # Credentials Admin
+      KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN_USER:-admin}"
+      KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD:-admin}"
+      # Configuration Réseau pour un reverse proxy
+      KC_PROXY: "edge"
+      KC_HOSTNAME: "${KC_HOSTNAME:-${KEYCLOAK_DOMAIN}}"
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      # Configuration des thèmes personnalisés
+      # KC_THEME_STATIC_MAX_AGE: Durée de cache en secondes (30 jours = 2592000)
+      KC_THEME_STATIC_MAX_AGE: "${KC_THEME_STATIC_MAX_AGE:-2592000}"
+      # KC_THEME_CACHE_THEMES: Activer le cache des thèmes (true/false)
+      KC_THEME_CACHE_THEMES: "${KC_THEME_CACHE_THEMES:-true}"
+      # KC_THEME_CACHE_TEMPLATES: Activer le cache des templates (true/false)
+      KC_THEME_CACHE_TEMPLATES: "${KC_THEME_CACHE_TEMPLATES:-true}"
+    labels:
+      #Labels pour exposer Keycloak via Traefik
+      <<: *traefik-keycloak-labels
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+      # Montage du thème personnalisé
+      - ./keycloak/themes:/opt/keycloak/themes
+    command:
+      - start
+      - --import-realm
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    restart: unless-stopped
+    # --- ON DESACTIVE COMPLETEMENT LE HEALTHCHECK POUR LE TEST ---
+    # healthcheck:
+#      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health || exit 1" ]
+    #   test: ["CMD-SHELL", "ss -tln | grep 8080 || exit 1"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
+    #   start_period: 120s
+    networks:
+      - default
+      # Connecter Keycloak au réseau de Traefik
+      - webproxy
+
+  # ===============================================================
+  # BACKEND - API SPRING BOOT
+  # ===============================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: "${PROJECT_NAME:-app}-backend"
+    depends_on:
+      app-db:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+#    ports:
+#      - "${BACKEND_INTERNAL_PORT:-8081}:8081"
+    environment:
+      # Configuration Spring Boot
+      BACKEND_INTERNAL_PORT: "${BACKEND_INTERNAL_PORT:-8081}"
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
+      # Configuration Database APPLICATION
+      DB_SERVICE_NAME: "app-db"                    # ← Nom du service de base de données
+      POSTGRES_PORT: "${POSTGRES_PORT}"             # ← Port PostgreSQL (par défaut: 5432 géré par Spring)
+      <<: *common-app-bd-vars
+      # Configuration Keycloak
+      KEYCLOAK_REALM: "${KEYCLOAK_REALM}"
+      KEYCLOAK_BACKEND_CLIENT: "${KEYCLOAK_BACKEND_CLIENT}"
+      KEYCLOAK_BACKEND_CLIENT_SECRET: "${KEYCLOAK_BACKEND_CLIENT_SECRET}"
+      KEYCLOAK_INTERNAL_URL: "${KEYCLOAK_INTERNAL_URL:-http://keycloak:8080}"
+      KEYCLOAK_EXTERNAL_URL: "${KEYCLOAK_EXTERNAL_URL:-http://localhost:8080}"
+      # Ajouter l'URL pour que le backend puisse atteindre Ollama sur la machine hôte
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://host.docker.internal:11434}"
+      # Configuration OpenAI et autres services IA
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+      OLLAMA_API_KEY: "${OLLAMA_API_KEY}"
+      # Pour Traefik
+      FRONTEND_DOMAIN: "${FRONTEND_DOMAIN}"
+      WWW_FRONTEND_DOMAIN: "${WWW_FRONTEND_DOMAIN}"
+      PROJECT_NAME: "${PROJECT_NAME}"
+      FRONTEND_SERVICE_NAME: "${FRONTEND_SERVICE_NAME}"
+      FRONTEND_URL: "${FRONTEND_URL:-https://${FRONTEND_DOMAIN}}"
+      # Configuration SMTP (Email)
+      SMTP_HOST: "${SMTP_HOST:-smtp.gmail.com}"
+      SMTP_PORT: "${SMTP_PORT:-587}"
+      SMTP_USERNAME: "${SMTP_USERNAME:-}"
+      SMTP_PASSWORD: "${SMTP_PASSWORD:-}"
+      SMTP_AUTH: "${SMTP_AUTH:-true}"
+      SMTP_STARTTLS: "${SMTP_STARTTLS:-true}"
+      SMTP_STARTTLS_REQUIRED: "${SMTP_STARTTLS_REQUIRED:-true}"
+      SMTP_CONNECTION_TIMEOUT: "${SMTP_CONNECTION_TIMEOUT:-5000}"
+      SMTP_TIMEOUT: "${SMTP_TIMEOUT:-5000}"
+      SMTP_WRITE_TIMEOUT: "${SMTP_WRITE_TIMEOUT:-5000}"
+      #SMTP_FROM: "${SMTP_FROM:-noreply@enclume-numerique.com}"
+      SMTP_FROM: "${SMTP_FROM:-noreply@enclume-numerique.com}"
+      SMTP_FROM_NAME: "${SMTP_FROM_NAME:-Enclume Numérique}"
+      # Configuration Email Admin
+      EMAIL_ADMIN_HSCODE: "${EMAIL_ADMIN_HSCODE:-}"
+      # Configuration Tarification
+      BASE_REQUEST_PRICE: "${BASE_REQUEST_PRICE:-0.01}"
+    labels:
+      <<: *traefik-backend-labels
+    restart: unless-stopped
+    networks:
+      - default
+      - webproxy
+
+  # ===============================================================
+  # FRONTEND - APPLICATION ANGULAR
+  # ===============================================================
+  frontend:
+    container_name: "${PROJECT_NAME:-app}-frontend"
+    build:
+      context: ./frontend
+      args:
+        # Variables de configuration passées au build-time
+        KEYCLOAK_EXTERNAL_URL: "${KEYCLOAK_EXTERNAL_URL}"
+        KEYCLOAK_REALM: "${KEYCLOAK_REALM}"
+        KEYCLOAK_FRONTEND_CLIENT: "${KEYCLOAK_FRONTEND_CLIENT}"
+        API_URL: "${API_URL:-/api}"
+        MARKET_VERSION: "${MARKET_VERSION:-DZ}"
+        NGINX_CONF: nginx-prod.conf
+    environment:
+      FRONTEND_DOMAIN: "${FRONTEND_DOMAIN}"
+      WWW_FRONTEND_DOMAIN: "${WWW_FRONTEND_DOMAIN}"
+      PROJECT_NAME: "${PROJECT_NAME}"
+      FRONTEND_SERVICE_NAME: "${FRONTEND_SERVICE_NAME}"
+      FRONTEND_INTERNAL_PORT: "${FRONTEND_INTERNAL_PORT:-80}"
+    labels:
+      <<: *traefik-frontend-labels
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - default
+      - webproxy
+
+# ===============================================================
+# VOLUMES PERSISTANTS
+# ===============================================================
+volumes:
+  app-database-data:
+    name: "${PROJECT_NAME:-app}-app-data"
+  keycloak-database-data:
+    name: "${PROJECT_NAME:-app}-keycloak-data"
+
+# ===============================================================
+# RÉSEAUX
+# ===============================================================
+networks:
+  webproxy:
+    external: true
+  default:

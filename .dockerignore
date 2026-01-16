@@ -1,0 +1,46 @@
+# ========================
+# Dependency directories
+# ========================
+node_modules/
+
+# ========================
+# Log files
+# ========================
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# ========================
+# Build output directories
+# ========================
+target/
+dist/
+
+# ========================
+# System files
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# IDE configuration files
+# ========================
+.idea/
+.vscode/
+
+# ========================
+# Environment and secret files
+# ========================
+
+
+# ========================
+# Temporary files
+# ========================
+*.swp
+*~
+*.tmp
+
+# ========================
+# Docker-related files
+# ========================
+docker-compose.override.yml

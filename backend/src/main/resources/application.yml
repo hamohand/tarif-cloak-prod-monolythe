@@ -1,0 +1,220 @@
+# ===================================================
+# CONFIGURATION SERVEUR
+# ===================================================
+server:
+  port: ${BACKEND_INTERNAL_PORT:8081}
+  # Configuration pour détecter HTTPS via les headers X-Forwarded-* de Traefik
+  forward-headers-strategy: framework
+
+  # ===================================================
+  # CONFIGURATION BASE DE DONNÉES APPLICATION
+  # ===================================================
+spring:
+  application:
+    name: backend
+  datasource:
+    url: jdbc:postgresql://${DB_SERVICE_NAME:app-db}:${POSTGRES_PORT:-5432}/${POSTGRES_DB}?characterEncoding=UTF-8
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Utiliser Flyway pour les migrations, Hibernate valide seulement
+    show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: true  # Permet d'appliquer V3_1 même si elle vient après V3 dans l'ordre numérique
+
+  # ===================================================
+  # CONFIGURATION KEYCLOAK (OAuth2 Resource Server)
+  # ===================================================
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Pour la VALIDATION : Doit correspondre à l'URL publique que Keycloak met dans le token.
+          issuer-uri: ${KEYCLOAK_EXTERNAL_URL}/realms/${KEYCLOAK_REALM}
+          # Pour la CONNEXION : Doit utiliser une URL interne pour que le backend puisse joindre Keycloak.
+          jwk-set-uri: ${KEYCLOAK_INTERNAL_URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs
+          connection-timeout: ${KEYCLOAK_CONNECTION_TIMEOUT:-10000} # Timeout en millisecondes pour les requêtes de validation de jeton
+          read-timeout: ${KEYCLOAK_READ_TIMEOUT:-10000} # Timeout en millisecondes pour les requêtes de validation de jeton
+  # ===================================================
+  # CONFIGURATION CACHE
+  # ===================================================
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
+
+  # ===================================================
+  # CONFIGURATION EMAIL (SMTP)
+  # ===================================================
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:true}
+          starttls:
+            enable: ${SMTP_STARTTLS:true}
+            required: ${SMTP_STARTTLS_REQUIRED:true}
+          connectiontimeout: ${SMTP_CONNECTION_TIMEOUT:5000}
+          timeout: ${SMTP_TIMEOUT:5000}
+          writetimeout: ${SMTP_WRITE_TIMEOUT:5000}
+    from: ${SMTP_FROM:noreply@enclume-numerique.com}
+    from-name: ${SMTP_FROM_NAME:Enclume Numérique}
+
+# Configuration des retries, pour gérer les indisponibilités temporaires de ses dépendances. C'est une approche moderne et très robuste, souvent préférée dans les architectures microservices.
+resilience4j:
+  retry:
+    instances:
+      keycloak:
+        max-attempts: ${KEYCLOAK_RETRY_MAX_ATTEMPTS:-5}
+        wait-duration: ${KEYCLOAK_RETRY_WAIT_DURATION:-10s}
+
+# ===================================================
+# CONFIGURATION KEYCLOAK ADMIN CLIENT
+# ===================================================
+keycloak:
+  admin:
+    server-url: ${KEYCLOAK_INTERNAL_URL:-http://keycloak:8080}
+    realm: ${KEYCLOAK_REALM:-hscode-realm}
+    client-id: ${KEYCLOAK_BACKEND_CLIENT:-backend-client}
+    client-secret: ${KEYCLOAK_BACKEND_CLIENT_SECRET:-backend-secret-keycloak-251017}
+  registration:
+    realm: ${KEYCLOAK_REALM:hscode-realm}
+
+# ===================================================
+# CONFIGURATION ADMIN EMAIL
+# ===================================================
+admin:
+  email: ${EMAIL_ADMIN_HSCODE:}
+
+# ===================================================
+# CONFIGURATION LOGGING
+# ===================================================
+logging:
+  level:
+    root: INFO
+    com.muhend.backend: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+
+
+# ===================================================
+# CONFIGURATION SERVICES IA
+# ===================================================
+openai:
+  openai-api-key: ${OPENAI_API_KEY}
+  model: ${OPENAI_MODEL:gpt-4}
+
+anthropic:
+  api-key: ${ANTHROPIC_API_KEY}
+  model: ${ANTHROPIC_MODEL:claude-3-sonnet-20240229}
+
+ollama:
+  api-key: ${OLLAMA_API_KEY}
+  base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+
+# ===================================================
+# CONFIGURATION TARIFICATION
+# ===================================================
+pricing:
+  # Tarif de base par requête (dans la devise du marché sélectionné)
+  base-request-price: ${BASE_REQUEST_PRICE:0.01}
+
+# ===================================================
+# CONFIGURATION STRIPE (Paiement électronique)
+# ===================================================
+stripe:
+  secret-key: ${STRIPE_SECRET_KEY:}
+  publishable-key: ${STRIPE_PUBLISHABLE_KEY:}
+  webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+  currency: ${STRIPE_CURRENCY:EUR}
+
+# ===================================================
+# CONFIGURATION CORS
+# ===================================================
+cors:
+  # Origines CORS autorisées (séparées par des virgules)
+  # Format: "https://domain1.com,https://www.domain1.com,http://localhost:4200"
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:https://hscode.enclume-numerique.com,https://www.hscode.enclume-numerique.com,http://localhost:4200}
+
+# ===================================================
+# CONFIGURATION INSCRIPTION
+# ===================================================
+registration:
+  confirmation:
+    token:
+      expiration:
+        hours: ${REGISTRATION_TOKEN_EXPIRATION_HOURS:24}  # Délai d'expiration du token de confirmation (24h)
+
+# ===================================================
+# CONFIGURATION SWAGGER/OPENAPI
+# ===================================================
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    # URL complète pour charger la spécification (nécessaire avec Traefik)
+    url: ${SPRINGDOC_SWAGGER_UI_URL:https://hscode.enclume-numerique.com/api/v3/api-docs}
+    # Forcer HTTPS dans les URLs générées (nécessaire derrière Traefik)
+    use-root-path: false
+    operations-sorter: method  # Trier par méthode HTTP
+    tags-sorter: alpha  # Trier les tags alphabétiquement
+    doc-expansion: none  # Ne pas développer les endpoints par défaut
+    display-request-duration: true  # Afficher la durée des requêtes
+    filter: true  # Activer le filtre de recherche
+    show-extensions: true
+    show-common-extensions: true
+    try-it-out-enabled: true  # Activer "Try it out" par défaut
+  show-actuator: false  # Ne pas afficher les endpoints Actuator
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+# ===================================================
+# PROFILS SPRING
+# ===================================================
+---
+# Profil DÉVELOPPEMENT
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    root: DEBUG
+    com.muhend.backend: DEBUG
+
+---
+# Profil PRODUCTION
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Temporairement activé pour créer la table usage_log. Revenir à 'validate' après la création.
+#      ddl-auto: validate  # Ne pas modifier le schéma automatiquement
+    show-sql: false
+
+logging:
+  level:
+    root: WARN
+    com.muhend.backend: INFO
+    org.springframework.security: WARN
