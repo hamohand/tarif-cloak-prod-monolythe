@@ -793,6 +793,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             console.error('Erreur lors du chargement du compteur de factures:', err);
+            
+            // Vérifier si l'erreur est due à un problème de parsing JSON (réponse HTML au lieu de JSON)
+            if (err.error && typeof err.error === 'string' && err.error.includes('<!doctype html>')) {
+              this.notificationService.error('Service indisponible. Le compteur de factures ne peut pas être chargé pour le moment.');
+            } else {
+              this.notificationService.error('Erreur lors du chargement du compteur de factures.');
+            }
+            
             this.newInvoicesCount = 0;
           }
         });
@@ -829,6 +837,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             console.error('Erreur lors du chargement du compteur de factures en retard:', err);
+            
+            // Vérifier si l'erreur est due à un problème de parsing JSON (réponse HTML au lieu de JSON)
+            if (err.error && typeof err.error === 'string' && err.error.includes('<!doctype html>')) {
+              // Ne pas afficher de notification pour éviter de spammer l'utilisateur
+              // Le message est déjà affiché pour le compteur de nouvelles factures
+            } else {
+              this.notificationService.error('Erreur lors du chargement du compteur de factures en retard.');
+            }
+            
             this.overdueInvoicesCount = 0;
           }
         });
