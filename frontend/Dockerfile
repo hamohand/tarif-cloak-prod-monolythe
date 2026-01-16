@@ -30,7 +30,7 @@ RUN npm run build
 # ==================================
 # ÉTAPE 2: Servir l'application avec Nginx
 # ==================================
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
 # Accepter un argument pour le fichier de configuration Nginx
 ARG NGINX_CONF=nginx-dev.conf
