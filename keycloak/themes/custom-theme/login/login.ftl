@@ -2,7 +2,7 @@
 <@layout.registrationLayout; section>
     <#if section = "header">
         <div class="custom-header">
-            <h1>Bienvenue sur Enclume-Numérique</h1>
+            <h1>Bienvenue sur Forge-Numérique</h1>
             <p>Connectez-vous à votre compte</p>
         </div>
     <#elseif section = "form">

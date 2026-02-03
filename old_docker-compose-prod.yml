@@ -7,7 +7,7 @@
 
 # Utilisation des champs d'extension (x-*) pour une meilleure organisation
 #x-traefik-host-rule: &traefik-host-rule "Host(`${FRONTEND_DOMAIN}`) || Host(`${WWW_FRONTEND_DOMAIN}`)"
-x-traefik-host-rule: &traefik-host-rule "Host(`hscode.enclume-numerique.com`) || Host(`www.hscode.enclume-numerique.com`)"
+x-traefik-host-rule: &traefik-host-rule "Host(`hscode.forge-numerique.com`) || Host(`www.hscode.forge-numerique.com`)"
 
 # Labels Traefik spécifiques pour le service frontend
 x-traefik-frontend-labels: &traefik-frontend-labels
@@ -34,13 +34,13 @@ x-traefik-backend-labels: &traefik-backend-labels
   # --- Définition du middleware pour ce service ---
   "traefik.http.middlewares.hscode-api-stripprefix.stripprefix.prefixes": "/api"
   # --- Routeur HTTPS pour le backend ---
-  "traefik.http.routers.hscode-backend-secure.rule": "(Host(`hscode.enclume-numerique.com`) || Host(`www.hscode.enclume-numerique.com`)) && PathPrefix(`/api`)"
+  "traefik.http.routers.hscode-backend-secure.rule": "(Host(`hscode.forge-numerique.com`) || Host(`www.hscode.forge-numerique.com`)) && PathPrefix(`/api`)"
   "traefik.http.routers.hscode-backend-secure.entrypoints": "websecure"
   "traefik.http.routers.hscode-backend-secure.tls.certresolver": "myresolver"
   "traefik.http.routers.hscode-backend-secure.middlewares": "hscode-api-stripprefix"
   "traefik.http.routers.hscode-backend-secure.service": "hscode-backend"
   # --- Routeur HTTP pour la redirection vers HTTPS ---
-  "traefik.http.routers.hscode-backend-http.rule": "(Host(`hscode.enclume-numerique.com`) || Host(`www.hscode.enclume-numerique.com`)) && PathPrefix(`/api`)"
+  "traefik.http.routers.hscode-backend-http.rule": "(Host(`hscode.forge-numerique.com`) || Host(`www.hscode.forge-numerique.com`)) && PathPrefix(`/api`)"
   "traefik.http.routers.hscode-backend-http.entrypoints": "web"
   "traefik.http.routers.hscode-backend-http.middlewares": "https-redirect" # Utilise le middleware global
   "traefik.http.routers.hscode-backend-http.service": "hscode-backend"
@@ -127,7 +127,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD:-admin}"
       # Configuration Réseau pour un reverse proxy
       KC_PROXY: "edge"
-      KC_HOSTNAME: "${KC_HOSTNAME:-auth.hscode.enclume-numerique.com}"
+      KC_HOSTNAME: "${KC_HOSTNAME:-auth.hscode.forge-numerique.com}"
       KC_HTTP_ENABLED: "true"
       KC_HEALTH_ENABLED: "true"
     labels:
@@ -136,13 +136,13 @@ services:
       - "traefik.docker.network=webproxy"
 
       # --- Routeur HTTPS pour Keycloak ---
-      - "traefik.http.routers.hscode-keycloak-secure.rule=Host(`auth.hscode.enclume-numerique.com`)"
+      - "traefik.http.routers.hscode-keycloak-secure.rule=Host(`auth.hscode.forge-numerique.com`)"
       - "traefik.http.routers.hscode-keycloak-secure.entrypoints=websecure"
       - "traefik.http.routers.hscode-keycloak-secure.tls.certresolver=myresolver"
       - "traefik.http.routers.hscode-keycloak-secure.service=hscode-keycloak"
 
       # --- Routeur HTTP pour la redirection globale (pas besoin de middleware ici) ---
-      - "traefik.http.routers.hscode-keycloak-http.rule=Host(`auth.hscode.enclume-numerique.com`)"
+      - "traefik.http.routers.hscode-keycloak-http.rule=Host(`auth.hscode.forge-numerique.com`)"
       - "traefik.http.routers.hscode-keycloak-http.entrypoints=web"
       - "traefik.http.routers.hscode-keycloak-http.middlewares=https-redirect"
 
@@ -223,7 +223,7 @@ services:
       context: ./frontend
       args:
         # Indique au Dockerfile d'utiliser KEYCLOAK_EXTERNAL_URL et la conf de prod
-        ##KEYCLOAK_EXTERNAL_URL: "https://auth.hscode.enclume-numerique.com/auth"
+        ##KEYCLOAK_EXTERNAL_URL: "https://auth.hscode.forge-numerique.com/auth"
         KEYCLOAK_EXTERNAL_URL: "${KEYCLOAK_EXTERNAL_URL}"
         NGINX_CONF: nginx-prod.conf
         # Variables Keycloak passées au build-time

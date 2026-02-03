@@ -153,16 +153,16 @@ SELECT * FROM pricing_plan WHERE market_version = 'DZ';
 
 ```bash
 # Par version
-curl -X GET "https://hscode.enclume-numerique.com/api/market-profiles/version/DZ"
+curl -X GET "https://hscode.forge-numerique.com/api/market-profiles/version/DZ"
 
 # Par code pays
-curl -X GET "https://hscode.enclume-numerique.com/api/market-profiles/country/DZ"
+curl -X GET "https://hscode.forge-numerique.com/api/market-profiles/country/DZ"
 ```
 
 ### Créer un nouveau profil (ADMIN)
 
 ```bash
-curl -X POST "https://hscode.enclume-numerique.com/api/market-profiles" \
+curl -X POST "https://hscode.forge-numerique.com/api/market-profiles" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{

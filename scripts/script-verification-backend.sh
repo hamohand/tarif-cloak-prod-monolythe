@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 
 BACKEND_CONTAINER="hscode-backend"
 DB_CONTAINER=""
-API_URL="https://www.hscode.enclume-numerique.com/api"
+API_URL="https://www.hscode.forge-numerique.com/api"
 
 # Fonction pour afficher un message de succès
 success() {

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Value("${cors.allowed-origins:https://hscode.enclume-numerique.com,https://www.hscode.enclume-numerique.com,http://localhost:4200}")
+    @Value("${cors.allowed-origins:https://hscode.forge-numerique.com,https://www.hscode.forge-numerique.com,http://localhost:4200}")
     private String allowedOrigins;
     
     @Value("${keycloak.admin.client-id:backend-client}")

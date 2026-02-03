@@ -106,13 +106,13 @@ Pour un transitaire traitant **500 déclarations/mois** :
 
 **Essai gratuit disponible** - Testez sans engagement
 
-**[Découvrir HS-Code →](https://www.hscode.enclume-numerique.com)**
+**[Découvrir HS-Code →](https://www.hscode.forge-numerique.com)**
 
 ---
 
 **Cordialement,**  
 L'équipe HS-Code  
-Enclume Numérique
+Forge Numérique
 
 *P.S. : Optimisez vos déclarations douanières et augmentez votre capacité de traitement. Inscrivez-vous maintenant pour un essai gratuit.*
 

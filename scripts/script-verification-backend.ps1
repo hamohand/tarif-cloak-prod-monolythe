@@ -6,7 +6,7 @@ Write-Host "========================" -ForegroundColor Cyan
 Write-Host ""
 
 $BACKEND_CONTAINER = "hscode-backend"
-$API_URL = "https://www.hscode.enclume-numerique.com/api"
+$API_URL = "https://www.hscode.forge-numerique.com/api"
 
 # Fonction pour afficher un message de succès
 function Success {

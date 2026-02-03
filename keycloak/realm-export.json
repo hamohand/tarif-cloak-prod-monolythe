@@ -788,12 +788,12 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-          "https://hscode.enclume-numerique.com/*",
-          "https://www.hscode.enclume-numerique.com/*"
+          "https://hscode.forge-numerique.com/*",
+          "https://www.hscode.forge-numerique.com/*"
       ],
       "webOrigins": [
-          "https://hscode.enclume-numerique.com",
-          "https://www.hscode.enclume-numerique.com"
+          "https://hscode.forge-numerique.com",
+          "https://www.hscode.forge-numerique.com"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -811,7 +811,7 @@
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
         "backchannel.logout.revoke.offline.tokens": "false",
-        "post.logout.redirect.uris": "https://hscode.enclume-numerique.com/*,https://www.hscode.enclume-numerique.com/*"
+        "post.logout.redirect.uris": "https://hscode.forge-numerique.com/*,https://www.hscode.forge-numerique.com/*"
       },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,

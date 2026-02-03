@@ -7,7 +7,7 @@ set -e
 
 ADMIN_TOKEN="${1:-YOUR_ADMIN_TOKEN}"
 USER_TOKEN="${2:-YOUR_USER_TOKEN}"
-BASE_URL="${3:-https://www.hscode.enclume-numerique.com/api}"
+BASE_URL="${3:-https://www.hscode.forge-numerique.com/api}"
 
 echo "=== Tests de Quotas Basiques (Phase 4) ==="
 echo "Base URL: $BASE_URL"

@@ -805,18 +805,18 @@ generatePayPerRequestClosureInvoice(organization, startDate, endDate) {
 **Configuration** :
 ```yaml
 Frontend:
-  - Host: hscode.enclume-numerique.com
+  - Host: hscode.forge-numerique.com
   - Port: 80 (interne)
   - SSL: Automatique
 
 Backend:
-  - Host: hscode.enclume-numerique.com/api
+  - Host: hscode.forge-numerique.com/api
   - Port: 8081 (interne)
   - Middleware: Strip prefix /api
   - SSL: Automatique
 
 Keycloak:
-  - Host: auth.enclume-numerique.com
+  - Host: auth.forge-numerique.com
   - Port: 8080 (interne)
   - Middleware: CORS
   - SSL: Automatique

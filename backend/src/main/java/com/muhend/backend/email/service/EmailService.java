@@ -27,10 +27,10 @@ public class EmailService {
     @Value("${spring.mail.from}")
     private String fromEmail;
 
-    @Value("${spring.mail.from-name:Enclume Numérique}")
+    @Value("${spring.mail.from-name:Forge Numérique}")
     private String fromName;
 
-    @Value("${FRONTEND_URL:https://hscode.enclume-numerique.com}")
+    @Value("${FRONTEND_URL:https://hscode.forge-numerique.com}")
     private String frontendUrl;
 
     /**
@@ -70,8 +70,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String from = fromEmail != null ? fromEmail : "noreply@enclume-numerique.com";
-            String fromNameValue = fromName != null ? fromName : "Enclume Numérique";
+            String from = fromEmail != null ? fromEmail : "noreply@forge-numerique.com";
+            String fromNameValue = fromName != null ? fromName : "Forge Numérique";
             
             helper.setFrom(from, fromNameValue);
             helper.setTo(toEmail != null ? toEmail : "");
@@ -155,8 +155,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String from = fromEmail != null ? fromEmail : "noreply@enclume-numerique.com";
-            String fromNameValue = fromName != null ? fromName : "Enclume Numérique";
+            String from = fromEmail != null ? fromEmail : "noreply@forge-numerique.com";
+            String fromNameValue = fromName != null ? fromName : "Forge Numérique";
             
             helper.setFrom(from, fromNameValue);
             helper.setTo(toEmail != null ? toEmail : "");
@@ -246,8 +246,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String from = fromEmail != null ? fromEmail : "noreply@enclume-numerique.com";
-            String fromNameValue = fromName != null ? fromName : "Enclume Numérique";
+            String from = fromEmail != null ? fromEmail : "noreply@forge-numerique.com";
+            String fromNameValue = fromName != null ? fromName : "Forge Numérique";
             
             helper.setFrom(from, fromNameValue);
             helper.setTo(organizationEmail != null ? organizationEmail : "");
@@ -312,8 +312,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String from = fromEmail != null ? fromEmail : "noreply@enclume-numerique.com";
-            String fromNameValue = fromName != null ? fromName : "Enclume Numérique";
+            String from = fromEmail != null ? fromEmail : "noreply@forge-numerique.com";
+            String fromNameValue = fromName != null ? fromName : "Forge Numérique";
 
             helper.setFrom(from, fromNameValue);
             helper.setTo(collaboratorEmail);
@@ -388,8 +388,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String from = fromEmail != null ? fromEmail : "noreply@enclume-numerique.com";
-            String fromNameValue = fromName != null ? fromName : "Enclume Numérique";
+            String from = fromEmail != null ? fromEmail : "noreply@forge-numerique.com";
+            String fromNameValue = fromName != null ? fromName : "Forge Numérique";
             
             helper.setFrom(from, fromNameValue);
             helper.setTo(toEmail != null ? toEmail : "");
@@ -463,8 +463,8 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String from = fromEmail != null ? fromEmail : "noreply@enclume-numerique.com";
-            String fromNameValue = fromName != null ? fromName : "Enclume Numérique";
+            String from = fromEmail != null ? fromEmail : "noreply@forge-numerique.com";
+            String fromNameValue = fromName != null ? fromName : "Forge Numérique";
             
             helper.setFrom(from, fromNameValue);
             helper.setTo(adminEmail);
@@ -540,7 +540,7 @@ public class EmailService {
      * Récupère l'URL du frontend depuis les variables d'environnement ou utilise une valeur par défaut.
      */
     private String getFrontendUrl() {
-        return frontendUrl != null ? frontendUrl : "https://hscode.enclume-numerique.com";
+        return frontendUrl != null ? frontendUrl : "https://hscode.forge-numerique.com";
     }
 }
 
