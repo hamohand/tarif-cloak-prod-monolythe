@@ -26,7 +26,7 @@ themes/
    ```
 
 2. Accéder à l'administration Keycloak :
-   - URL : `https://auth.hscode.forge-numerique.com`
+   - URL : `https://auth.hscode.enclume-numerique.com`
    - Se connecter avec les identifiants admin
 
 3. Configurer le thème :

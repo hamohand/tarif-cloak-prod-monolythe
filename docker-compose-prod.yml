@@ -246,9 +246,9 @@ services:
       SMTP_CONNECTION_TIMEOUT: "${SMTP_CONNECTION_TIMEOUT:-5000}"
       SMTP_TIMEOUT: "${SMTP_TIMEOUT:-5000}"
       SMTP_WRITE_TIMEOUT: "${SMTP_WRITE_TIMEOUT:-5000}"
-      #SMTP_FROM: "${SMTP_FROM:-noreply@forge-numerique.com}"
-      SMTP_FROM: "${SMTP_FROM:-noreply@forge-numerique.com}"
-      SMTP_FROM_NAME: "${SMTP_FROM_NAME:-Forge Numérique}"
+      #SMTP_FROM: "${SMTP_FROM:-noreply@enclume-numerique.com}"
+      SMTP_FROM: "${SMTP_FROM:-noreply@enclume-numerique.com}"
+      SMTP_FROM_NAME: "${SMTP_FROM_NAME:-Enclume Numérique}"
       # Configuration Email Admin
       EMAIL_ADMIN_HSCODE: "${EMAIL_ADMIN_HSCODE:-}"
       # Configuration Tarification

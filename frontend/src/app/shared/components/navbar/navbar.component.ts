@@ -20,7 +20,7 @@ import { of } from 'rxjs';
     <nav class="navbar">
       <div class="nav-brand">
         <a routerLink="/">
-          Forge-Numérique
+          Enclume-Numérique
           @if (countryCode$ | async; as countryCode) {
             <span class="brand-country-code">{{ countryCode }}</span>
           }

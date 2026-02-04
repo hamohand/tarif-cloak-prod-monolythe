@@ -66,8 +66,8 @@ spring:
           connectiontimeout: ${SMTP_CONNECTION_TIMEOUT:5000}
           timeout: ${SMTP_TIMEOUT:5000}
           writetimeout: ${SMTP_WRITE_TIMEOUT:5000}
-    from: ${SMTP_FROM:noreply@forge-numerique.com}
-    from-name: ${SMTP_FROM_NAME:Forge Numérique}
+    from: ${SMTP_FROM:noreply@enclume-numerique.com}
+    from-name: ${SMTP_FROM_NAME:Enclume Numérique}
 
 # Configuration des retries, pour gérer les indisponibilités temporaires de ses dépendances. C'est une approche moderne et très robuste, souvent préférée dans les architectures microservices.
 resilience4j:
@@ -143,7 +143,7 @@ stripe:
 cors:
   # Origines CORS autorisées (séparées par des virgules)
   # Format: "https://domain1.com,https://www.domain1.com,http://localhost:4200"
-  allowed-origins: ${CORS_ALLOWED_ORIGINS:https://hscode.forge-numerique.com,https://www.hscode.forge-numerique.com,http://localhost:4200}
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:https://hscode.enclume-numerique.com,https://www.hscode.enclume-numerique.com,http://localhost:4200}
 
 # ===================================================
 # CONFIGURATION INSCRIPTION
@@ -165,7 +165,7 @@ springdoc:
     path: /swagger-ui.html
     enabled: true
     # URL complète pour charger la spécification (nécessaire avec Traefik)
-    url: ${SPRINGDOC_SWAGGER_UI_URL:https://hscode.forge-numerique.com/api/v3/api-docs}
+    url: ${SPRINGDOC_SWAGGER_UI_URL:https://hscode.enclume-numerique.com/api/v3/api-docs}
     # Forcer HTTPS dans les URLs générées (nécessaire derrière Traefik)
     use-root-path: false
     operations-sorter: method  # Trier par méthode HTTP

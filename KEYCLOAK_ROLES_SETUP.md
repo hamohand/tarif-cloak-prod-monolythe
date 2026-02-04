@@ -7,7 +7,7 @@ Ce document explique comment créer et configurer les rôles ADMIN et USER dans 
 ### Via l'interface Keycloak
 
 1. **Connectez-vous à Keycloak Admin Console**
-   - URL : `https://auth.hscode.forge-numerique.com`
+   - URL : `https://auth.hscode.enclume-numerique.com`
    - Connectez-vous avec un compte administrateur
 
 2. **Sélectionnez le realm `hscode-realm`**

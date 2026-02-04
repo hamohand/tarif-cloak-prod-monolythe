@@ -98,13 +98,13 @@ Pour un site e-commerce avec **500 produits actifs** :
 
 **Essai gratuit disponible** - Testez avec vos premiers produits
 
-**[Découvrir HS-Code →](https://www.hscode.forge-numerique.com)**
+**[Découvrir HS-Code →](https://www.hscode.enclume-numerique.com)**
 
 ---
 
 **Cordialement,**  
 L'équipe HS-Code  
-Forge Numérique
+Enclume Numérique
 
 *P.S. : Classez vos produits e-commerce en quelques secondes. Inscrivez-vous maintenant pour un essai gratuit et simplifiez votre expansion internationale.*
 

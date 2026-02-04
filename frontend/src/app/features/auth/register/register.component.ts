@@ -51,7 +51,7 @@ import { take } from 'rxjs/operators';
                 formControlName="organizationName"
                 class="form-control"
                 [class.error]="isFieldInvalid('organizationName')"
-                placeholder="Ex: Forge Numérique">
+                placeholder="Ex: Enclume Numérique">
               <div class="error-message" *ngIf="isFieldInvalid('organizationName')">
                 {{ getErrorMessage('organizationName') }}
               </div>

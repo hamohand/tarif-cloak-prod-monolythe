@@ -87,10 +87,10 @@ docker logs hscode-backend --tail 30 2>&1 | grep -i "started\|error\|exception\|
 echo ""
 echo "7️⃣ Test de l'endpoint de santé..."
 echo "-----------------------------------"
-HEALTH_RESPONSE=$(curl -s -k -o /dev/null -w "%{http_code}" https://www.hscode.forge-numerique.com/api/health 2>/dev/null || echo "000")
+HEALTH_RESPONSE=$(curl -s -k -o /dev/null -w "%{http_code}" https://www.hscode.enclume-numerique.com/api/health 2>/dev/null || echo "000")
 if [ "${HEALTH_RESPONSE}" = "200" ]; then
     echo -e "${GREEN}✓${NC} Endpoint de santé répond (HTTP ${HEALTH_RESPONSE})"
-    HEALTH_BODY=$(curl -s -k https://www.hscode.forge-numerique.com/api/health 2>/dev/null)
+    HEALTH_BODY=$(curl -s -k https://www.hscode.enclume-numerique.com/api/health 2>/dev/null)
     echo "   Réponse: ${HEALTH_BODY}"
 else
     echo -e "${YELLOW}⚠️${NC} Endpoint de santé ne répond pas (HTTP ${HEALTH_RESPONSE})"
@@ -109,5 +109,5 @@ echo "Pour vérifier l'état:"
 echo "  docker ps | grep backend"
 echo ""
 echo "Pour tester l'endpoint de santé:"
-echo "  curl -k https://www.hscode.forge-numerique.com/api/health"
+echo "  curl -k https://www.hscode.enclume-numerique.com/api/health"
 

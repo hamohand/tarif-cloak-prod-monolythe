@@ -26,12 +26,12 @@ FRONTEND_SERVICE_NAME=frontend
 
 ```env
 # Domaines principaux pour le frontend et le backend
-FRONTEND_DOMAIN=hscode.forge-numerique.com
-WWW_FRONTEND_DOMAIN=www.hscode.forge-numerique.com
+FRONTEND_DOMAIN=hscode.enclume-numerique.com
+WWW_FRONTEND_DOMAIN=www.hscode.enclume-numerique.com
 
 # Domaine pour Keycloak (authentification)
-KEYCLOAK_DOMAIN=auth.hscode.forge-numerique.com
-KC_HOSTNAME=auth.hscode.forge-numerique.com
+KEYCLOAK_DOMAIN=auth.hscode.enclume-numerique.com
+KC_HOSTNAME=auth.hscode.enclume-numerique.com
 ```
 
 ### Traefik
@@ -86,7 +86,7 @@ KEYCLOAK_BACKEND_CLIENT_SECRET=CHANGEZ_MOI
 
 # URLs Keycloak
 KEYCLOAK_INTERNAL_URL=http://keycloak:8080
-KEYCLOAK_EXTERNAL_URL=https://auth.hscode.forge-numerique.com
+KEYCLOAK_EXTERNAL_URL=https://auth.hscode.enclume-numerique.com
 KEYCLOAK_IMAGE_TAG=22.0.1
 
 # Timeouts et Retry
@@ -116,7 +116,7 @@ KC_THEME_CACHE_TEMPLATES=true
 
 ```env
 # Origines CORS autorisées (séparées par des virgules)
-CORS_ALLOWED_ORIGINS=https://hscode.forge-numerique.com,https://www.hscode.forge-numerique.com,http://localhost:4200
+CORS_ALLOWED_ORIGINS=https://hscode.enclume-numerique.com,https://www.hscode.enclume-numerique.com,http://localhost:4200
 ```
 
 ### SMTP (Email)
@@ -139,11 +139,11 @@ SMTP_TIMEOUT=5000
 SMTP_WRITE_TIMEOUT=5000
 
 # Expéditeur par défaut
-SMTP_FROM=noreply@forge-numerique.com
-SMTP_FROM_NAME=Forge Numérique
+SMTP_FROM=noreply@enclume-numerique.com
+SMTP_FROM_NAME=Enclume Numérique
 
 # URL du frontend (pour les liens dans les emails)
-FRONTEND_URL=https://hscode.forge-numerique.com
+FRONTEND_URL=https://hscode.enclume-numerique.com
 
 # Email de l'administrateur pour les notifications
 EMAIL_ADMIN_HSCODE=med@forge_numerique.com
@@ -227,7 +227,7 @@ keycloak/themes/
    ```
 
 2. **Configurer le thème dans Keycloak Admin Console** :
-   - Accéder à `https://auth.hscode.forge-numerique.com`
+   - Accéder à `https://auth.hscode.enclume-numerique.com`
    - Se connecter avec les identifiants admin
    - Aller dans **Realm Settings** → **Themes**
    - Sélectionner `custom-theme` pour **Login theme** et **Account theme**
@@ -287,10 +287,10 @@ FRONTEND_SERVICE_NAME=frontend
 # ===============================================================
 # DOMAINES
 # ===============================================================
-FRONTEND_DOMAIN=hscode.forge-numerique.com
-WWW_FRONTEND_DOMAIN=www.hscode.forge-numerique.com
-KEYCLOAK_DOMAIN=auth.hscode.forge-numerique.com
-KC_HOSTNAME=auth.hscode.forge-numerique.com
+FRONTEND_DOMAIN=hscode.enclume-numerique.com
+WWW_FRONTEND_DOMAIN=www.hscode.enclume-numerique.com
+KEYCLOAK_DOMAIN=auth.hscode.enclume-numerique.com
+KC_HOSTNAME=auth.hscode.enclume-numerique.com
 
 # ===============================================================
 # TRAEFIK
@@ -332,7 +332,7 @@ KEYCLOAK_FRONTEND_CLIENT=frontend-client
 KEYCLOAK_BACKEND_CLIENT=backend-client
 KEYCLOAK_BACKEND_CLIENT_SECRET=votre_client_secret
 KEYCLOAK_INTERNAL_URL=http://keycloak:8080
-KEYCLOAK_EXTERNAL_URL=https://auth.hscode.forge-numerique.com
+KEYCLOAK_EXTERNAL_URL=https://auth.hscode.enclume-numerique.com
 KEYCLOAK_IMAGE_TAG=22.0.1
 KEYCLOAK_CONNECTION_TIMEOUT=10000
 KEYCLOAK_READ_TIMEOUT=10000
@@ -349,7 +349,7 @@ KC_THEME_CACHE_TEMPLATES=true
 # ===============================================================
 # CORS
 # ===============================================================
-CORS_ALLOWED_ORIGINS=https://hscode.forge-numerique.com,https://www.hscode.forge-numerique.com,http://localhost:4200
+CORS_ALLOWED_ORIGINS=https://hscode.enclume-numerique.com,https://www.hscode.enclume-numerique.com,http://localhost:4200
 
 # ===============================================================
 # SMTP (EMAIL)
@@ -364,9 +364,9 @@ SMTP_STARTTLS_REQUIRED=true
 SMTP_CONNECTION_TIMEOUT=5000
 SMTP_TIMEOUT=5000
 SMTP_WRITE_TIMEOUT=5000
-SMTP_FROM=noreply@forge-numerique.com
-SMTP_FROM_NAME=Forge Numérique
-FRONTEND_URL=https://hscode.forge-numerique.com
+SMTP_FROM=noreply@enclume-numerique.com
+SMTP_FROM_NAME=Enclume Numérique
+FRONTEND_URL=https://hscode.enclume-numerique.com
 EMAIL_ADMIN_HSCODE=med@forge_numerique.com
 
 # ===============================================================

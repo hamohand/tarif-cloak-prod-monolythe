@@ -38,7 +38,7 @@ public class StripeService {
     private final SubscriptionRepository subscriptionRepository;
     private final InvoiceService invoiceService;
     
-    @Value("${app.base-url:https://www.hscode.forge-numerique.com}")
+    @Value("${app.base-url:https://www.hscode.enclume-numerique.com}")
     private String baseUrl;
     
     public StripeService(

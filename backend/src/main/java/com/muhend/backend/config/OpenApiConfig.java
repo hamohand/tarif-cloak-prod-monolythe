@@ -18,7 +18,7 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
-    @Value("${FRONTEND_URL:https://hscode.forge-numerique.com}")
+    @Value("${FRONTEND_URL:https://hscode.enclume-numerique.com}")
     private String frontendUrl;
 
     @Bean

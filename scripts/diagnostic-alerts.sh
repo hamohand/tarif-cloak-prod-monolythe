@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 
 # Variables
 BACKEND_CONTAINER="${PROJECT_NAME:-app}-backend"
-FRONTEND_DOMAIN="${FRONTEND_DOMAIN:-www.hscode.forge-numerique.com}"
+FRONTEND_DOMAIN="${FRONTEND_DOMAIN:-www.hscode.enclume-numerique.com}"
 API_URL="https://${FRONTEND_DOMAIN}/api"
 
 echo "1️⃣ Vérification des conteneurs Docker"

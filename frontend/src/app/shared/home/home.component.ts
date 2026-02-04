@@ -12,7 +12,7 @@ import { map, switchMap, catchError, distinctUntilChanged } from 'rxjs/operators
   imports: [CommonModule, RouterLink, AsyncPipe],
   template: `
     <div class="home-container">
-      <h3>Bienvenue sur Forge-Numérique</h3>
+      <h3>Bienvenue sur Enclume-Numérique</h3>
       <p>Votre solution complète pour la conformité tarifaire.</p>
 
       <!-- Présentation de l'API Recherche HS-code - Affichée uniquement pour les utilisateurs non connectés -->
@@ -178,7 +178,7 @@ import { map, switchMap, catchError, distinctUntilChanged } from 'rxjs/operators
       <footer class="home-footer">
         <p>Micro-entreprise de développement d'applications pour les entreprises<br>
         Contact : med&#64;forge-numerique.com <br>
-        <a href="https://www.forge-numerique.com">Forge-Numérique</a></p>
+        <a href="https://www.forge-numerique.com">Enclume-Numérique</a></p>
       </footer>
     </div>
   `,

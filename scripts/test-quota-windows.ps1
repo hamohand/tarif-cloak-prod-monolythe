@@ -1,10 +1,10 @@
 # Script de test manuel pour la Phase 4 : Quotas Basiques (Windows PowerShell)
-# Utilisation: .\test-quota-windows.ps1 -AdminToken "YOUR_ADMIN_TOKEN" -UserToken "YOUR_USER_TOKEN" -BaseUrl "https://www.hscode.forge-numerique.com/api"
+# Utilisation: .\test-quota-windows.ps1 -AdminToken "YOUR_ADMIN_TOKEN" -UserToken "YOUR_USER_TOKEN" -BaseUrl "https://www.hscode.enclume-numerique.com/api"
 
 param(
     [string]$AdminToken = "YOUR_ADMIN_TOKEN",
     [string]$UserToken = "YOUR_USER_TOKEN",
-    [string]$BaseUrl = "https://www.hscode.forge-numerique.com/api"
+    [string]$BaseUrl = "https://www.hscode.enclume-numerique.com/api"
 )
 
 Write-Host "=== Tests de Quotas Basiques (Phase 4) ===" -ForegroundColor Cyan

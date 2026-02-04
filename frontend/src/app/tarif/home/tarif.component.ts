@@ -18,7 +18,7 @@ import { RouterOutlet } from '@angular/router';
 
     </main>
     <footer>
-      <p>&copy; 2025 Forge-Numérique</p>
+      <p>&copy; 2025 Enclume-Numérique</p>
     </footer>
 
     </div>

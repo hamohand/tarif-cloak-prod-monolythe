@@ -98,13 +98,13 @@ Pour une entreprise d'import-export traitant **1000 produits/mois** :
 
 **Essai gratuit disponible** - Testez sans engagement
 
-**[Découvrir HS-Code →](https://www.hscode.forge-numerique.com)**
+**[Découvrir HS-Code →](https://www.hscode.enclume-numerique.com)**
 
 ---
 
 **Cordialement,**  
 L'équipe HS-Code  
-Forge Numérique
+Enclume Numérique
 
 *P.S. : Réduisez vos temps de classification de 95% dès la première utilisation. Inscrivez-vous maintenant pour un essai gratuit.*
 
