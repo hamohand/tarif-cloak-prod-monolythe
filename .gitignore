@@ -49,4 +49,6 @@ node_modules/
 /.nb-gradle/
 
 ### Visual Studio Code ###
-.vscode/
+.vscode/nul
+nul
+nul
